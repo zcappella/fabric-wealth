@@ -9,5 +9,4 @@ class WidgetCreateForm(ModelForm):
 			'title',
 			'size',
 			'color',
-			'inventory_number',
 		]

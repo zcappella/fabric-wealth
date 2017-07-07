@@ -3,14 +3,14 @@ from django.db import models
 # Create your models here.
 
 class Size(models.Model):
-	size = models.CharField(max_length=200)
+	size = models.CharField(max_length=25)
 
 	def __str__(self):
 		return self.size
 
 
 class Color(models.Model):
-	color = models.CharField(max_length=50)
+	color = models.CharField(max_length=25)
 
 	def __str__(self):
 		return self.color
