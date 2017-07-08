@@ -5,20 +5,30 @@
     <head>
         <title>{% block title %}Widget Warehouse{% endblock title %}</title>
         {% block styling %}
+        	<link rel="shortcut icon" href="{%  static 'imgs/favicon-cog.ico' %}">
         	<link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.min.css' %}">
 			<link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap-theme.min.css' %}">
 			<link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.css' %}">
+			<link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/variables.less' %}">
+			<link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootswatch.less' %}">
         {% endblock styling %}
     </head>
 
     <body>
-	    <nav class="navbar navbar-inverse">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="{% url 'core:widget-list'%}">Widget Warehouse</a>
+		<div class="bs-component">
+			<nav class="navbar navbar-inverse">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="{% url 'core:widget-list' %}">Widget Warehouse</a>
+					</div>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="{% url 'core:widget-create' %}">Create New Widget</a></li>
+					</ul>
+					</div>
 				</div>
-			</div>
-		</nav>
+			</nav>
+		</div>
 
 	    {% block content %}
 	    {% endblock content %}

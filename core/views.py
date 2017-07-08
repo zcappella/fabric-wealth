@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.urlresolvers import reverse_lazy
 from django.views.generic import ListView, CreateView
 
 from core.models import Widget, Color, Size
@@ -11,10 +12,13 @@ class WidgetListView(ListView):
 	context_object_name = 'widget'
 	template_name = 'core/widget_list.html'
 
+
 	def get_context_data(self, **kwargs):
 		ctx = super(WidgetListView, self).get_context_data(**kwargs)
 
+		ctx['widgets'] = Widget.objects.all()
 		return ctx
+
 
 
 class WidgetCreateView(CreateView):
@@ -22,7 +26,7 @@ class WidgetCreateView(CreateView):
 	context_object_name = 'widget'
 	template_name = 'core/widget_create.html'
 	form = WidgetCreateForm
-	success_url = 'core: "widget-list"'
+	success_url = reverse_lazy('core:widget-list')
 	fields = '__all__'
 
 	def get_context_data(self, **kwargs):
