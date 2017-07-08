@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="page-header">
+				<h1>Create Widget Order</h1>
+			</div>
+		</div>
+	</div>
+
+
+	{{ form.errors }}
+	<div class="row">
+		<div class="col-lg-10 col-lg-offset-1">
+			<div class="well bs-component">
+				<form action="" method="POST" class="form-horizontal">{% csrf_token %}
+					<fieldset>
+						<div class="form-group">
+							{% for widget in widgets %}
+								<div class="col-sm-4">
+									<h1>{{ widget.title }}</h1>
+									<ul>
+										<li>Color: {{ widget.color }}</li>
+										<li>Size: {{ widget.size }}</li>
+										<li>Stock Quantity: {% if widget.inventory_number == 0 %}
+																Out of stock
+															{% else %}
+																{{ widget.inventory_number }}
+															{% endif %}
+										</li>
+									</ul>	
+								</div>
+							{% endfor %}
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

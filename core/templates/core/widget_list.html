@@ -31,5 +31,29 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="col-lg-6 col-lg-offset-1">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Order Widgets</h3>
+			</div>
+
+			<div class="panel-body">
+				Place your widget order <a href="{% url 'core:order-create' %}">here</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-6 col-lg-offset-1">
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h3 class="panel-title">Widget Suggestions?</h3>
+			</div>
+
+			<div class="panel-body">
+				Don't see the Widget you want? Create a new Widget <a href="{% url 'core:widget-create' %}">here</a>
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock content %}
