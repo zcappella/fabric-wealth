@@ -1,8 +1,8 @@
-from django.forms import ModelForm
+from django import forms
 
-from core.models import Widget, Order
+from core.models import Widget, Order, OrderDict
 
-class WidgetCreateForm(ModelForm):
+class WidgetCreateForm(forms.ModelForm):
 	class Meta:
 		model = Widget
 		fields = [
@@ -12,9 +12,18 @@ class WidgetCreateForm(ModelForm):
 		]
 
 
-class OrderCreateForm(ModelForm):
+class OrderCreateForm(forms.ModelForm):
 	class Meta:
 		model = Order
 		fields = [
 			'widgets',
-		]		
+		]
+		widgets = {'containter': forms.HiddenInput()}
+
+
+class OrderDictCreateForm(forms.ModelForm):
+	class Meta:
+		model = OrderDict
+		fields = [
+			'order_name',
+		]

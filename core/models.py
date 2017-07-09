@@ -25,12 +25,18 @@ class Widget(models.Model):
 	def __str__(self):
 		return self.title
 
+	class Meta:
+		ordering = ('title',)
+
+
+class OrderDict(models.Model):
+	order_name = models.CharField(max_length=50, unique=True)
+
 
 class Order(models.Model):
-	widgets = models.ManyToManyField(Widget)
+	widgets = models.ForeignKey(Widget)
+	quantity = models.IntegerField(default=0, null=True, blank=True)
+	container = models.ForeignKey(OrderDict)
 
-	def __str__(self):
-		return self.id
 
-	class Meta:
-		ordering = ('id',)
+
