@@ -1,24 +1,13 @@
 import requests
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView
 
-from core.models import Widget, Color, Size, Order, OrderDict
-from core.forms import WidgetCreateForm, OrderCreateForm, OrderDictCreateForm
+from core.models import Widget, Color, Size, Order, WidgetOrder
+from core.forms import WidgetCreateForm, WidgetOrderForm
 
-# Create your views here.
-
-
-def _calculate_widget_ranges():
-	widgets = Widget.objects.all()
-	range_dict = {}
-
-	for widget in widgets:
-		range_dict[widget.id] = 'x' * widget.inventory_number
-
-	return range_dict
-
+# Create your views here
 
 
 class WidgetListView(ListView):
@@ -52,63 +41,74 @@ class WidgetCreateView(CreateView):
 		return ctx
 
 
-class OrderNameCreateView(CreateView):
-	model = OrderDict
-	context_object_name = 'order_dict'
-	template_name = 'core/order_title.html'
-	form = OrderDictCreateForm
-	fields = '__all__'
-	success_url = reverse_lazy('core:order-title-list')
-
-
 class OrderListView(ListView):
-	model = OrderDict
-	context_object_name = 'order_dict'
+	model = Order
+	context_object_name = 'order'
 	template_name = 'core/order_list.html'
 
 	def get_context_data(self, **kwargs):
 		ctx = super(OrderListView, self).get_context_data(**kwargs)
 
-		ctx['order_titles'] = OrderDict.objects.values_list('order_name', flat=True)
-
-		return ctx
-
-
-class OrderNameListView(ListView):
-	model = OrderDict
-	context_object_name = 'order_dict'
-	template_name = 'core/order_title_list.html'
-
-	def get_context_data(self, **kwargs):
-		ctx = super(OrderNameListView, self).get_context_data(**kwargs)
-
-		ctx['order_titles'] = OrderDict.objects.all()
+		ctx['orders'] = Order.objects.all()
 
 		return ctx
 
 
 
-class OrderCreateView(CreateView):
-	model = Order
-	context_object_name = 'order'
-	template_name = 'core/order_create.html'
-	form = OrderCreateForm
-	success_url = reverse_lazy('core:order-list')
-	fields = '__all__'
-
-
-	def get_context_data(self, **kwargs):
-		ctx = super(OrderCreateView, self).get_context_data(**kwargs)
-
-		order_id = self.kwargs['order_dict']
-
-		ctx['colors'] = Color.objects.all()
-		ctx['sizes'] = Size.objects.all()
+def WidgetOrderCreateView(request):
+	if request.method == "GET":
+		ctx = {}
 		ctx['widgets'] = Widget.objects.all()
-		ctx['ranges'] = _calculate_widget_ranges()
-		ctx['container'] = order_id
-		ctx['current_orders'] = Order.objects.filter(container=order_id).prefetch_related('widgets')
+		return render(request, 'core/order_create.html', ctx)
 
-		return ctx
+	if request.method == "POST":
+		pprint(request.POST)
 
+		order = Order.objects.create()
+
+		for key, val in request.POST.items():
+			if val and key != 'csrfmiddlewaretoken':
+				widget = Widget.objects.get(id=int(key))
+				WidgetOrder.objects.create(widget=widget, order=order, quantity=int(val))
+
+		return redirect('core:order-list')
+
+
+def WidgetOrderEditView(request, id):
+	if request.method == "GET":
+		order = Order.objects.get(id=id)
+		ctx = {}
+		ctx['order'] = order
+		ctx['widgets'] = Widget.objects.all()
+		ctx['widget_map'] = {widget.id:widget.quantity for widget in WidgetOrder.objects.filter(order=id)}
+
+		return render(request, 'core/order_edit.html', ctx)
+
+	if request.method == "POST":
+		order = Order.objects.get(id=id)
+
+		for key, val in request.POST.items():
+			if val and key != 'csrfmiddlewaretoken':
+				widget_list =  order.widgets.values_list('id', flat=True)
+
+				if key in widget_list:
+					wo = WidgetOrder.objects.get(order=id, widget=int(key))
+					wo.quantity = int(val)
+					wo.save()
+
+		return redirect('core:order-list')
+
+	if request.method == "DELETE":
+		order = Order.objects.get(id=id)
+		order.delete()
+
+		return redirect('core:order-list')
+
+
+def WidgetOrderDeleteView(request, id):
+	if request.method == "POST":
+		order = Order.objects.get(id=id)
+		order.delete()
+
+		return redirect('core:order-list')
 

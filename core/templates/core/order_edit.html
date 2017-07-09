@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load core_extras %}
 
 {% block content %}
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="page-header">
-				<h1>Widget Order</h1>
+				<h1>Edit Widget Order</h1>
 			</div>
 		</div>
 	</div>
@@ -44,7 +45,11 @@
 										<td>{% if widget.inventory_number == 0 %}
 												Out of stock
 											{% else %}
-												<input id="quantity" type="number" class="form-control input-sm" name="{{ widget.id }}" min="0" max="{{ widget.inventory_number }}">
+												{% if widget.id in widget_map %}
+													<input id="quantity" type="number" class="form-control input-sm" name="{{ widget.id }}" min="0" max="{{ widget.inventory_number }}" value="{% get_quantity widget %}">
+												{% else %}
+													<input id="quantity" type="number" class="form-control input-sm" name="{{ widget }}" min="0" max="{{ widget.inventory_number }}">
+												{% endif %}
 											{% endif %}
 										</td>
 									</tr>
@@ -61,19 +66,15 @@
 					</div>
 				</fieldset>
 			</form>
+
+			<form action="{% url 'core:order-delete' id=order.id %}" method="POST" class="form-horizontal">{% csrf_token %}
+				<div class="form-group">
+					<div class="col-lg-10 col-lg-offset-2">
+						<input type="submit" class="btn btn-danger" value="Delete Order">
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
-
-
-	{% if current_orders %}
-		<div class="row">
-			<div class="col-lg-2 col-lg-offset-1">
-				List of Widgets in Current Order
-				{% for order in current_orders %}
-					<a href="{% url 'core:order-create' order_dict=order_dict.id %}">{{ title }}</a>
-				{% endfor %}
-			</div>
-		</div>
-	{% endif %}
 </div>
 {% endblock content %}

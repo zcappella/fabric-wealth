@@ -1,6 +1,7 @@
 from django import forms
+from django.forms import modelformset_factory
 
-from core.models import Widget, Order, OrderDict
+from core.models import Widget, Order, WidgetOrder
 
 class WidgetCreateForm(forms.ModelForm):
 	class Meta:
@@ -11,19 +12,13 @@ class WidgetCreateForm(forms.ModelForm):
 			'color',
 		]
 
-
-class OrderCreateForm(forms.ModelForm):
+class WidgetOrderForm(forms.ModelForm):
 	class Meta:
-		model = Order
+		model = WidgetOrder
 		fields = [
-			'widgets',
+			'widget',
+			'quantity',
 		]
-		widgets = {'containter': forms.HiddenInput()}
 
 
-class OrderDictCreateForm(forms.ModelForm):
-	class Meta:
-		model = OrderDict
-		fields = [
-			'order_name',
-		]
+WidgetOrderFormset = modelformset_factory(WidgetOrder, exclude=('order',))
