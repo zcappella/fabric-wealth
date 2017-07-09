@@ -7,7 +7,13 @@
 			<div class="page-header">
 				<h1>Order Summaries</h1>
 				{% for order in orders %}
-					<p>{{ order.id }}</p>
+					<h2>Order #: {{ order.id }} <a href="{% url 'core:order-edit' id=order.id %}" class="glyphicon glyphicon-edit"></a></h2>
+
+					{% for widget in order.widgets.all %}
+						<h3>Widget Name: {{ widget.title }}</h3>
+						<p>Color: {{ widget.color }}</p>
+						<p>Size: {{ widget.size }}</p>
+					{% endfor %}
 				{% endfor %}
 			</div>
 		</div>

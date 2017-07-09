@@ -62,8 +62,6 @@ def WidgetOrderCreateView(request):
 		return render(request, 'core/order_create.html', ctx)
 
 	if request.method == "POST":
-		pprint(request.POST)
-
 		order = Order.objects.create()
 
 		for key, val in request.POST.items():
