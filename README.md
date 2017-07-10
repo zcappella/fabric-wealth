@@ -29,5 +29,5 @@ There are just a few steps needed to be taken to build this project locally:
 -Make migrations
 -Create super user (python manage.py createsuperuser)
 -Collect the static files
--Go to the admin site and add colors and sizes for widgets
+-Load the data in from the database (python manage.py loaddata db.json)
 -Then the application should be able to be run
