@@ -27,5 +27,7 @@ There are just a few steps needed to be taken to build this project locally:
 -Have Python3
 -pip install -r requirements.txt
 -Make migrations
+-Create super user (python manage.py createsuperuser)
 -Collect the static files
+-Go to the admin site and add colors and sizes for widgets
 -Then the application should be able to be run
