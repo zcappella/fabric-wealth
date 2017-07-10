@@ -11,6 +11,7 @@
 			<link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootstrap.css' %}">
 			<link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/variables.less' %}">
 			<link rel="stylesheet" href="{% static 'bootstrap-3.3.7/css/bootswatch.less' %}">
+			<link rel="stylesheet" href="{% static 'DataTables-1.10.15/media/css/jquery.dataTables.min.css' %}">
         {% endblock styling %}
     </head>
 
@@ -26,6 +27,10 @@
 						<li><a href="{% url 'core:order-create' %}" class="text-primary">Order Your Widgets!</a></li>
 					</ul>
 
+					<ul class="nav navbar-nav">
+						<li><a href="{% url 'core:order-list' %}" class="text-primary">Edit Previous Orders</a></li>
+					</ul>
+
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="{% url 'core:widget-create' %}">Create New Widget</a></li>
 					</ul>
@@ -36,12 +41,13 @@
 
 	    {% block content %}
 	    {% endblock content %}
-	</body>
 
-	{% block scripts %}
-		<script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'jquery-3.2.1/jquery-3.2.1.min.js' %}"></script>
-	{% endblock scripts %}
+	    {% block scripts %}
+			<script type="text/javascript" src="{% static 'jquery-3.2.1/jquery-3.2.1.min.js' %}"></script>
+			<script type="text/javascript" src="{% static 'DataTables-1.10.15/media/js/jquery.dataTables.min.js' %}"></script>
+			<script type="text/javascript" src="{% static 'bootstrap-3.3.7/js/bootstrap.min.js' %}"></script>
+		{% endblock scripts %}
+	</body>
 </html>
 
 

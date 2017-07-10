@@ -18,14 +18,13 @@
 			<form action="" method="POST" class="form-horizontal">{% csrf_token %}
 				<fieldset>
 					<div class="form-group">
-						<table class="table table-striped table-hover">
+						<table class="table table-striped table-hover" id="widget-table">
 							<thead>
 								<tr>
 									<td>&nbsp;</td>
 									<td><strong>Widget Title</strong></td>
 									<td><strong>Size</strong></td>
 									<td><strong>Color</strong></td>
-									<td><strong>Stock Quantity</strong></td>
 									<td><strong>Order Quantity</strong></td>
 							</thead>
 
@@ -36,21 +35,8 @@
 										<td>{{ widget.title }}</td>
 										<td>{{ widget.size }}</td>
 										<td>{{ widget.color }}</td>
-										<td>{% if widget.inventory_number == 0 %}
-												Out of stock
-											{% else %}
-												{{ widget.inventory_number }}
-											{% endif %}
-										</td>
-										<td>{% if widget.inventory_number == 0 %}
-												Out of stock
-											{% else %}
-												{% if widget.id in widget_map %}
-													<input id="quantity" type="number" class="form-control input-sm" name="{{ widget.id }}" min="0" max="{{ widget.inventory_number }}" value="{% get_quantity widget %}">
-												{% else %}
-													<input id="quantity" type="number" class="form-control input-sm" name="{{ widget }}" min="0" max="{{ widget.inventory_number }}">
-												{% endif %}
-											{% endif %}
+										<td>
+											<input id="quantity" type="number" class="form-control input-sm" name="{{ widget }}" min="0" max="{{ widget.inventory_number }}">
 										</td>
 									</tr>
 								{% endfor %}
@@ -78,3 +64,16 @@
 	</div>
 </div>
 {% endblock content %}
+
+
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript" class="init">
+$(document).ready(
+	(function() {
+	$('#widget-table').DataTable( {
+		"lengthMenu": [[50, 75, 100, -1], [50, 75, 100, "All"]],
+	});
+}))(jQuery);
+</script>
+{% endblock scripts %}

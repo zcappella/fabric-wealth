@@ -2,6 +2,9 @@ from django.db import models
 
 # Create your models here.
 
+############################################
+# This will hold all of the possible sizes of a Widget
+############################################
 class Size(models.Model):
 	size = models.CharField(max_length=25)
 
@@ -9,6 +12,9 @@ class Size(models.Model):
 		return self.size
 
 
+############################################
+# This will hold all of the possible colors of a Widget
+############################################
 class Color(models.Model):
 	color = models.CharField(max_length=25)
 
@@ -16,6 +22,9 @@ class Color(models.Model):
 		return self.color
 
 
+############################################
+# This will hold the Widget data, along with the title
+############################################
 class Widget(models.Model):
 	title = models.CharField(max_length=200)
 	size = models.ForeignKey(Size, on_delete=models.CASCADE)
@@ -28,6 +37,9 @@ class Widget(models.Model):
 		ordering = ('title',)
 
 
+############################################
+# This is a table to hold the Order
+############################################
 class Order(models.Model):
 	widgets = models.ManyToManyField(Widget, through='WidgetOrder')
 
@@ -35,6 +47,9 @@ class Order(models.Model):
 		return str(self.id)
 
 
+############################################
+# This is a through table to hold all of the widgets and their quantities to an order
+############################################
 class WidgetOrder(models.Model):
 	widget = models.ForeignKey(Widget, on_delete=models.CASCADE)
 	order = models.ForeignKey(Order, on_delete=models.CASCADE)

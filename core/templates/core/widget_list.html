@@ -19,12 +19,6 @@
 						<ul>
 							<li>Color: {{ widget.color }}</li>
 							<li>Size: {{ widget.size }}</li>
-							<li>Stock Quantity: {% if widget.inventory_number == 0 %}
-													Out of stock
-												{% else %}
-													{{ widget.inventory_number }}
-												{% endif %}
-							</li>
 						</ul>	
 					</div>
 				{% endfor %}
