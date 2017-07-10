@@ -16,6 +16,7 @@ There are many things that I would change in future editions of the software:
 -I would clean up my static files significantly
 	-I'm certain that there are files that are unnecessary, but I keep them to be safe
 -Django does a great deal of security for us with the csrf_token and XSS protection, but a more robust structure would be preferred.
+-Including a front end framework would be really helpful with the order create and edit functionality
 
 
 
